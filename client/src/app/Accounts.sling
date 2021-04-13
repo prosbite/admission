@@ -1,0 +1,15 @@
+class:
+
+model Accounts
+{
+    accountId as int
+    username as string
+    password as string
+    userRole as string
+    createdAt as long
+    updatedAt as long
+}
+
+const TABLENAME = "accounts"
+
+

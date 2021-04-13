@@ -1,0 +1,33 @@
+import jk.widget.common
+import jk.widget
+
+class is TitledWidget #widget:
+
+ui LayerWidget
+{
+    VerticalScrollerWidget{
+        scrollBarDisabled = true
+        LayerWithBackgroundColorWidget container{
+            color = Color.instance("#F4F4F4")
+                VerticalBoxWidget {
+                    marginLeft = context.getHeightValue("20mm")
+                    marginRight = context.getHeightValue("20mm")
+                    marginTop = context.getHeightValue("5mm")
+                    marginBottom = context.getHeightValue("5mm")
+                    LabelWidget {
+                    text = "Accounts"
+                    fontSize = context.getHeightValue("14mm")
+                }
+            }
+        }
+    }
+}
+
+func initializeWidget override
+{
+    base.initializeWidget()
+    
+}
+
+func getWidgetTitle as string:
+    return "Accounts"

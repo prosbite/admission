@@ -1,0 +1,109 @@
+import jk.widget.common
+import jk.widget
+
+class is TitledWidget #widget:
+
+ui LayerWidget
+{
+    VerticalScrollerWidget{
+        scrollBarDisabled = true
+        LayerWithBackgroundColorWidget container{
+            color = Color.instance("#eeeeee")
+
+            VerticalBoxWidget main{
+                margin = context.getHeightValue("10mm")
+                spacing = context.getHeightValue("5mm")  
+                
+                LayerWithBackgroundColorWidget{
+                    // color = Color.instance("#FFFFFF")
+
+                    VerticalBoxWidget{
+                        margin = context.getHeightValue("20mm")
+                        marginRight = context.getHeightValue("75mm")
+                        marginLeft = context.getHeightValue("75mm")
+
+                        LabelWidget {
+                            text = "Admission & Registration"
+                            textColor = Color.instance("#777777")
+                            fontSize = context.getHeightValue("5mm")
+                            textAlign = LabelWidget.ALIGN_CENTER
+                            paddingBottom = context.getHeightValue("7mm")
+                            fontBold = true
+                        }
+
+                        spacing = context.getHeightValue("3mm")
+                        TextInputWidget usernameTxt {
+                            type = TextInputWidget.TYPE_NAME
+                            placeholder = "Username"
+                            fontSize = context.getHeightValue("3mm")
+                            padding = context.getHeightValue("3mm")
+                            backgroundColor = Color.instance("#FFFFFF")
+                        }
+                        TextInputWidget passwordTxt {
+                            type = TextInputWidget.TYPE_PASSWORD
+                            placeholder = "Password"
+                            fontSize = context.getHeightValue("3mm")
+                            padding = context.getHeightValue("3mm")
+                            backgroundColor = Color.instance("#FFFFFF")
+                        }
+                        LabelWidget errorLbl{
+                            text = ""
+                            textColor = Color.instance("#c0392b")
+                            fontSize = context.getHeightValue("3mm")
+                            textAlign = LabelWidget.ALIGN_LEFT
+                            fontBold = true
+                        }
+                        TextButtonWidget loginBtn : 1.0 {
+                            text = "Login"
+                            padding = context.getHeightValue("3mm")
+                            backgroundColor = Color.instance("#27ae60")
+                            marginTop = context.getHeightValue("2mm")
+                            clickHandler = func {
+                                validate()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+func initializeWidget override
+{
+    base.initializeWidget()
+    
+}
+
+func validate 
+{
+    if usernameTxt.getWidgetText() == "" || passwordTxt.getWidgetText() == "" {
+        errorLbl.setWidgetText("Please enter your username and password.")
+    }
+    else {
+        login()
+    }
+}
+
+func login as void
+{  
+    var account = new Accounts.Accounts()
+    account.setUsername(usernameTxt.getWidgetText())
+    account.setPassword(passwordTxt.getWidgetText())
+    APIClient.getInstance().login(account.toDynamicMap(), func(response as DynamicMap){
+        var data = assert response.getDynamicMap("data")
+        var records = data.getDynamicVector("account")
+        if  not records || records.getSize() < 1{
+            errorLbl.setWidgetText("Username and password did not match!")
+        }
+        else{
+            var widget final = this 
+            var nav = NavigationWidget.findNavigationWidget(widget)
+            nav.popWidget()
+            // nav.pushWidget(new Dashboard(context))
+        }
+    })
+}
+
+func getWidgetTitle as string:
+    return "Admission Login"

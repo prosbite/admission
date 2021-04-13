@@ -1,0 +1,159 @@
+import jk.http.client
+import jk.http.worker
+
+class is HTTPRPCRouter #webapi2:
+
+var db as DatabaseHandler
+var cors = Config.getCorsUtil()
+
+func getDatabase as DatabaseHandler
+{
+    if not db {
+        db = DatabaseHandler.forContext(getCtx())
+        db.updateStudentTable()
+        db.updateAdmissionTable()
+    }
+    return db
+}
+
+func postProcess(req as HTTPWorkerRequest, resp as HTTPWorkerResponse) override:
+    cors.handleWorkerRequest(req, resp)
+
+GET "/admission/students"
+{
+    var students = assert getDatabase().getStudents()
+    sendOk students
+}
+
+GET "/admission/students/admitted"
+{
+    var students = assert getDatabase().getAdmittedStudents()
+    sendOk students
+}
+
+GET "/admission/students/notadmitted"
+{
+    var students = assert getDatabase().getNotAdmittedStudents()
+    sendOk students
+}
+
+GET "/admissions"
+{
+    var admissions = assert getDatabase().getAdmissions()
+    sendOk admissions
+}
+
+GET "/admission/accounts"
+{
+    var accounts = assert getDatabase().getAccounts()
+    sendOk accounts
+}
+
+
+GET "/admission/student/:id"
+{
+    var student = assert getDatabase().getStudent(vars.getInteger("id"))
+    sendOk student
+}
+
+
+POST "/admission/student"
+{
+    var  requestData = assert Student.Student.forJsonString(req.getBodyString()):
+        sendError "invalidRequest"
+    var student = new Student.Student()
+    student.setStudent_id(requestData.getStudent_id())
+    student.setFirstname(requestData.getFirstname())
+    student.setMiddlename(requestData.getMiddlename())
+    student.setLastname(requestData.getLastname())
+    student.setGender(requestData.getGender())
+    assert getDatabase().addStudent(student):
+        sendError "failedToSaveStudent"
+    sendOk student
+}
+
+POST "/admission"
+{
+    var  requestData = assert Admission.Admission.forJsonString(req.getBodyString()):
+        sendError "invalidRequest"
+    var admission = new Admission.Admission()
+    admission.setStudent_idValue(requestData.getStudent_idValue())
+    admission.setSy(requestData.getSy())
+    admission.setSem(requestData.getSem())
+    admission.setCourse(requestData.getCourse())
+    assert getDatabase().addAdmission(admission):
+        sendError "failedToSaveAdmission"
+    sendOk
+}
+
+POST "/admission/account"
+{
+    var  requestData = assert Accounts.Accounts.forJsonString(req.getBodyString()):
+        sendError "invalidRequest"
+    var account = new Accounts.Accounts()
+    account.setAccountId(requestData.getAccountId())
+    account.setUsername(requestData.getUsername())
+    account.setPassword(requestData.getPassword())
+    account.setUserRole(requestData.getUserRole())
+    assert getDatabase().addAccount(account):
+        sendError "failedToSaveAccount"
+    sendOk
+}
+
+POST "/admission/login"
+{
+    var  requestData = assert Accounts.Accounts.forJsonString(req.getBodyString()):
+        sendError "invalidRequest"
+    var login = assert getDatabase().login(requestData.getUsername(), requestData.getPassword())
+    sendOk login
+}
+
+PUT "/admission/student/:id"
+{
+    var requestData = assert Student.Student.forJsonString(req.getBodyString()):
+        sendError "invalidRequest"
+    var student = new Student.Student()
+    student.setFirstname(requestData.getFirstname())
+    student.setMiddlename(requestData.getMiddlename())
+    student.setLastname(requestData.getLastname())
+    student.setGender(requestData.getGender())
+    assert getDatabase().updateStudent(vars.getInteger("id"),student):
+        sendError "failedToSaveStudent"
+    sendOk
+}
+
+PUT "/admission/:id"
+{
+    var requestData = assert Admission.Admission.forJsonString(req.getBodyString()):
+        sendError "invalidRequest"
+    var admission = new Admission.Admission()
+    admission.setStudent_id(requestData.getStudent_id())
+    admission.setSy(requestData.getSy())
+    admission.setSem(requestData.getSem())
+    admission.setCourse(requestData.getCourse())
+    assert getDatabase().updateAdmission(vars.getInteger("id"),admission):
+        sendError "failedToSaveAdmission"
+    sendOk
+}
+
+
+DELETE "/admission/student/:id"
+{
+    assert getDatabase().deleteStudent(vars.getInteger("id")):
+        sendError "failedToDeleteStudent"
+    sendOk
+}
+
+DELETE "/admission/:id"
+{
+    assert getDatabase().deleteAdmission(vars.getInteger("id")):
+        sendError "failedToDeleteAdmission"
+    sendOk
+}
+
+DELETE "/admission/account/:id"
+{
+    assert getDatabase().deleteAccount(vars.getInteger("id")):
+        sendError "failedToDeletAccount"
+    sendOk
+}

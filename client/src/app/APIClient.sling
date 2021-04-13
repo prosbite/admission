@@ -1,0 +1,74 @@
+import jk.widget.web
+import jk.ui
+import jk.widget
+
+class is JSONAPIClientWithGui:
+
+pvar widgetDefaultErrorHandler as function<void, Error>
+var instance static as this
+
+func getInstance static as this:
+    return instance
+
+func create(context as GuiApplicationContext, parentWidget as Widget =null) static as this
+{
+    assert context
+    instance = new this()
+    instance.setApiUrl(Env.HOST .. ":" .. Env.SERVER_PORT)
+    instance.setContext(context)
+    if parentWidget:
+        instance.setParentWidget(parentWidget)
+    return instance
+}
+
+func onError(error as Error, callback as function<void,Error>) override
+{
+    assert callback:
+        onDefaultErrorHandler(error)
+    base.onError(error,callback)
+}
+
+func onDefaultErrorHandler(error as Error) override
+{
+    var context = assert getContext()
+    assert error
+    assert widgetDefaultErrorHandler:
+        context.showErrorDialog(error.toString())
+    widgetDefaultErrorHandler(error)
+}
+
+func admitStudent(data as DynamicMap, callback as function<void, DynamicMap>, errorCallback as function<void, Error>):
+    doPost("/admission", data, callback, errorCallback)
+
+func updateStudent(id as string,data as DynamicMap, callback as function<void, DynamicMap>, errorCallback as function<void, Error>):
+    doPut("/admission/student/" .. id,data,callback,errorCallback)
+
+func deleteStudent(id as string, callback as function<void, DynamicMap>, errorCallback as function<void, Error>):
+    doDelete("/admission/student/" .. id,callback,errorCallback)
+
+func addAccount(data as DynamicMap, callback as function<void, DynamicMap>, errorCallback as function<void, Error>):
+    doPost("/admission/account", data, callback, errorCallback)
+
+func getAccounts(callback as function<void, DynamicMap>, errorCallback as function<void, Error> = null):
+    doGet("/admission/accounts", callback,errorCallback)
+
+func deleteAccount(id as string, callback as function<void, DynamicMap>, errorCallback as function<void, Error>):
+    doDelete("/admission/account/" .. id,callback,errorCallback)
+
+func getStudents(callback as function<void, DynamicMap>, errorCallback as function<void, Error> = null):
+    doGet("/admission/students", callback,errorCallback)
+
+func getNotAdmittedStudents(callback as function<void, DynamicMap>, errorCallback as function<void, Error> = null):
+    doGet("/admission/students/notadmitted", callback,errorCallback)
+
+func getAdmittedStudents(callback as function<void, DynamicMap>, errorCallback as function<void, Error> = null):
+    doGet("/admission/students/admitted", callback,errorCallback)
+
+func getStudent(id as string, callback as function<void, DynamicMap>, errorCallback as function<void, Error> = null):
+    doGet("/admission/student/" .. id, callback,errorCallback)
+
+func login(data as DynamicMap, callback as function<void, DynamicMap>, errorCallback as function<void, Error> = null):
+    doPost("/admission/login", data, callback,errorCallback)
+
+func addStudent(data as DynamicMap, callback as function<void, DynamicMap>, errorCallback as function<void, Error> = null):
+    doPost("/admission/student", data, callback,errorCallback)

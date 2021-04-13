@@ -1,0 +1,203 @@
+import jk.widget.common
+import jk.widget
+
+class is TitledWidget #widget:
+
+ui LayerWidget
+{
+    VerticalScrollerWidget{
+        scrollBarDisabled = true
+        LayerWithBackgroundColorWidget container{
+            color = Color.instance("#F4F4F4")
+            HorizontalBoxWidget {
+                VerticalBoxWidget : 3.0 {
+                    marginLeft = context.getHeightValue("20mm")
+                    marginRight = context.getHeightValue("20mm")
+                    marginTop = context.getHeightValue("20mm")
+                    marginBottom = context.getHeightValue("5mm")
+
+                    LabelWidget {
+                        text = "STUDENT STATISTICS"
+                        paddingBottom = context.getHeightValue("3mm")
+                        fontSize = context.getHeightValue("3mm")
+                        textColor = Color.instance("#BBBBBB")
+                        fontBold = true
+                    }
+                    LayerWithBackgroundColorWidget {
+                        color = Color.instance("#FAFAFA")
+                        HorizontalBoxWidget {
+                            spacing = context.getHeightValue("5mm")
+                            margin = context.getHeightValue("5mm")
+                           
+                            VerticalBoxWidget : 1.0 {
+                                HorizontalBoxWidget : 1.0 {
+                                    LabelWidget : 1.0 {
+
+                                    }
+                                    ImageWidget {
+                                        imageResource = "male"
+                                        imageWidth = context.getHeightValue("15mm")
+                                        imageHeight = context.getHeightValue("15mm")
+                                    }
+                                    LabelWidget : 1.0 {
+                                        
+                                    }
+                                }
+                                LabelWidget {
+                                    text = "13"
+                                    fontSize = context.getHeightValue("7mm")
+                                    fontBold = true
+                                    textAlign = LabelWidget.ALIGN_CENTER
+                                    paddingTop = context.getHeightValue("1mm")
+                                }
+                                LabelWidget {
+                                    text = "MALE STUDENTS"
+                                    fontSize = context.getHeightValue("2mm")
+                                    fontBold = true
+                                    textColor = Color.instance("#AAAAAA")
+                                    textAlign = LabelWidget.ALIGN_CENTER
+                                }
+                            }
+                            VerticalBoxWidget : 1.0 {
+                                HorizontalBoxWidget : 1.0 {
+                                    LabelWidget : 1.0 {
+
+                                    }
+                                    ImageWidget {
+                                        imageResource = "female"
+                                        imageWidth = context.getHeightValue("15mm")
+                                        imageHeight = context.getHeightValue("15mm")
+                                    }
+                                    LabelWidget : 1.0 {
+                                        
+                                    }
+                                }
+                                LabelWidget {
+                                    text = "11"
+                                    fontSize = context.getHeightValue("7mm")
+                                    fontBold = true
+                                    textAlign = LabelWidget.ALIGN_CENTER
+                                    paddingTop = context.getHeightValue("1mm")
+                                }
+                                LabelWidget {
+                                    text = "FEMALE STUDENTS"
+                                    fontSize = context.getHeightValue("2mm")
+                                    fontBold = true
+                                    textColor = Color.instance("#AAAAAA")
+                                    textAlign = LabelWidget.ALIGN_CENTER
+                                }
+                            }
+                            VerticalBoxWidget : 1.0 {
+                                HorizontalBoxWidget : 1.0 {
+                                    LabelWidget : 1.0 {
+
+                                    }
+                                    ImageWidget {
+                                        imageResource = "group"
+                                        imageWidth = context.getHeightValue("15mm")
+                                        imageHeight = context.getHeightValue("15mm")
+                                    }
+                                    LabelWidget : 1.0 {
+                                        
+                                    }
+                                }
+                                LabelWidget {
+                                    text = "24"
+                                    fontSize = context.getHeightValue("7mm")
+                                    fontBold = true
+                                    textAlign = LabelWidget.ALIGN_CENTER
+                                    paddingTop = context.getHeightValue("1mm")
+                                }
+                                LabelWidget {
+                                    text = "TOTAL NUMBER OF STUDENTS"
+                                    fontSize = context.getHeightValue("2mm")
+                                    fontBold = true
+                                    textColor = Color.instance("#AAAAAA")
+                                    textAlign = LabelWidget.ALIGN_CENTER
+                                }
+                            }
+                        }
+                    }
+                    LabelWidget {
+                        text = "ADMISSION SUMMARY"
+                        paddingTop = context.getHeightValue("8mm")
+                        paddingBottom = context.getHeightValue("3mm")
+                        fontSize = context.getHeightValue("3mm")
+                        textColor = Color.instance("#BBBBBB")
+                        fontBold = true
+                    }
+                    HorizontalBoxWidget {
+                        spacing = context.getHeightValue("5mm")
+
+                        LayerWithBackgroundColorWidget : 1.0 {
+                            color = Color.instance("#2ecc71")
+                            VerticalBoxWidget {
+                                margin = context.getHeightValue("4mm")
+                                LabelWidget {
+                                    text = "BSIT"
+                                    fontSize = context.getHeightValue("7mm")
+                                    fontBold = true
+                                    textColor = Color.instance("#FFFFFF")
+                                }
+                                LabelWidget {
+                                    text = "Bachelor of Science in Information Technology"
+                                    fontSize = context.getHeightValue("2mm")
+                                    textColor = Color.instance("#FAFAFA")
+                                }
+                            }
+                        }
+
+                        LayerWithBackgroundColorWidget : 1.0 {
+                            color = Color.instance("#e67e22")
+                            VerticalBoxWidget {
+                                margin = context.getHeightValue("4mm")
+                                LabelWidget {
+                                    text = "BSCS"
+                                    fontSize = context.getHeightValue("7mm")
+                                    fontBold = true
+                                    textColor = Color.instance("#FFFFFF")
+                                }
+                                LabelWidget {
+                                    text = "Bachelor of Science in Computer Science"
+                                    fontSize = context.getHeightValue("2mm")
+                                    textColor = Color.instance("#FAFAFA")
+                                }
+                            }
+                        }
+
+                        LayerWithBackgroundColorWidget : 1.0 {
+                            color = Color.instance("#3498db")
+                            VerticalBoxWidget {
+                                margin = context.getHeightValue("4mm")
+                                LabelWidget {
+                                    text = "BSBA"
+                                    fontSize = context.getHeightValue("7mm")
+                                    fontBold = true
+                                    textColor = Color.instance("#FFFFFF")
+                                }
+                                LabelWidget {
+                                    text = "Bachelor of Science in Business Administration"
+                                    fontSize = context.getHeightValue("2mm")
+                                    textColor = Color.instance("#FAFAFA")
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+                VerticalBoxWidget : 1.0 {
+
+                }
+            }
+        }
+    }
+}
+
+
+func initializeWidget override
+{
+    base.initializeWidget()  
+}
+
+func getWidgetTitle as string:
+    return "Dashboard"

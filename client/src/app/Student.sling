@@ -1,0 +1,29 @@
+class:
+
+model Student
+{
+    student_id as int
+    firstname as string
+    middlename as string
+    lastname as string
+    gender as string
+    created_at as long
+    updated_at as long
+}
+
+// func createTable as SQLTableInfo
+// {
+//     var tbl = SQLTableInfo.forName(TABLENAME)
+
+//     tbl.addIntegerKeyColumn("student_id")
+//     tbl.addStringColumn("sem")
+//     tbl.addStringColumn("sy")
+//     tbl.addStringColumn("course")
+//     tbl.addLongColumn("created_at")
+//     tbl.addLongColumn("updated_at")
+//     updateTable(tbl)
+    
+//     return tbl
+// }
+
+const TABLENAME = "student"

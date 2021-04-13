@@ -1,0 +1,296 @@
+import jk.log
+import jk.sqlite
+import jk.mysql
+import jk.sql
+import jk.env
+import jk.time
+
+class:
+
+const STUDENT = "student"
+const ADMISSION = "admission"
+const ACCOUNT = "accounts"
+
+pvar db as MySQLDatabase
+
+func forContext(ctx as LoggingContext) static as this
+{
+    var cstr = Env.DB
+    Log.debug(ctx, "Opening database connection: `"..cstr.."'")
+    db = MySQLDatabase.forConnectionStringSync(ctx, cstr)
+    if not db:
+        Error.throw("failedToConnectToDatabase",cstr)
+    var v = new this()
+    v.setDb(db)
+    return v
+}
+
+func updateTable(table as SQLTableInfo)
+{
+    if not table:
+        Error.throw("nullTable","updateTable")
+    if not db:
+        Error.throw("nullDb","updateTable")
+    if not db.ensureTableExistsSync(table):
+        Error.throw("failedToUpdateTable",table.getName())
+    
+}
+
+func defaultUser
+{
+    var account = new Accounts.Accounts()
+    account.setUsername("admin")
+    account.setPassword("admin")
+    addAccount(account)
+}
+
+func updateStudentTable
+{
+    var student = SQLTableInfo.forName(STUDENT)
+    student.addIntegerKeyColumn("student_id")
+    student.addStringColumn("firstname")
+    student.addStringColumn("middlename")
+    student.addStringColumn("lastname")
+    student.addStringColumn("gender")
+    student.addLongColumn("created_at")
+    student.addLongColumn("updated_at")
+    updateTable(student)
+}
+
+func updateAdmissionTable
+{
+    var admission = SQLTableInfo.forName(ADMISSION)
+    admission.addIntegerKeyColumn("adm_id")
+    admission.addIntegerColumn("student_id")
+    admission.addStringColumn("sem")
+    admission.addStringColumn("sy")
+    admission.addStringColumn("course")
+    admission.addLongColumn("created_at")
+    admission.addLongColumn("updated_at")
+    updateTable(admission)
+}
+
+func updateAccountsTable
+{
+    var account = SQLTableInfo.forName(ACCOUNT)
+    account.addIntegerKeyColumn("accountId")
+    account.addStringColumn("username")
+    account.addStringColumn("password")
+    account.addStringColumn("userRole")
+    account.addLongColumn("createdAt")
+    account.addLongColumn("updatedAt")
+    account.addUniqueIndex("username")
+    updateTable(account)
+}
+
+func getStudents as DynamicMap
+{
+    var v = new vector<Student.Student>
+    var it = assert db.querySync(db.prepareQueryAllStatementSync(STUDENT, [], [SQLOrderingRule.forAscending("lastname")])):
+        return null
+    while it{
+        var o = it.next()
+        if  not o:
+            break
+        var student = Student.Student.forJsonObject(o)
+        if not student:
+            continue
+        v += student
+    }
+    var data = new DynamicMap()
+    data.setObject("records", v)
+    return data 
+} 
+
+func getNotAdmittedStudents as DynamicMap
+{
+    var v = new vector<Student.Student>
+    var it = assert db.querySync(db.prepareQueryAllStatementSync("admission_student", [], [SQLOrderingRule.forAscending("lastname")])):
+        return null
+    while it{
+        var o = it.next()
+        if  not o:
+            break
+        var student = Student.Student.forJsonObject(o)
+        if not student:
+            continue
+        v += student
+    }
+    var data = new DynamicMap()
+    data.setObject("records", v)
+    return data 
+} 
+
+func getAdmittedStudents as DynamicMap
+{
+    var v = new vector<StudentAdmission.StudentAdmission>
+    var it = assert db.querySync(db.prepareQueryAllStatementSync("admitted_students", [], [SQLOrderingRule.forAscending("lastname")])):
+        return null
+    while it{
+        var o = it.next()
+        if  not o:
+            break
+        var student = StudentAdmission.StudentAdmission.forJsonObject(o)
+        if not student:
+            continue
+        v += student
+    }
+    var data = new DynamicMap()
+    data.setObject("records", v)
+    return data 
+} 
+
+func getStudent(student_id as int) as DynamicMap
+{
+    var v = new vector<Student.Student>
+    var criteria = new Student.Student()
+    criteria.setStudent_idValue(student_id)
+    var it = db.querySync(db.prepareQueryWithCriteriaStatementSync(Student.TABLENAME, criteria.toDynamicMap(), 1))
+    while it{
+        var o = it.next()
+        if  not o:
+            break
+        var student = Student.Student.forJsonObject(o)
+        if not student:
+            continue
+        v += student
+    }
+    var data = new DynamicMap()
+    data.setObject("student", v)
+    return data 
+}
+
+func getAdmissions as DynamicMap
+{
+    var v = new vector<Admission.Admission>
+    var it = assert db.querySync(db.prepareQueryAllStatementSync(ADMISSION)):
+        return null
+    while it{
+        var o = it.next()
+        if  not o:
+            break
+        var admission = Admission.Admission.forJsonObject(o)
+        if not admission:
+            continue
+        v += admission
+    }
+    var data = new DynamicMap()
+    data.setObject("records", v)
+    return data 
+}
+
+func getAccounts as DynamicMap
+{
+    var v = new vector<Accounts.Accounts>
+    var it = assert db.querySync(db.prepareQueryAllStatementSync(ACCOUNT, [], [SQLOrderingRule.forAscending("username")])):
+        return null
+    while it{
+        var o = it.next()
+        if  not o:
+            break
+        var account = Accounts.Accounts.forJsonObject(o)
+        if not account:
+            continue
+        v += account
+    }
+    var data = new DynamicMap()
+    data.setObject("records", v)
+    return data 
+}
+
+func addStudent(student as Student.Student) as DynamicMap
+{
+    assert student
+    student.setCreated_atValue(SystemClock.asUTCSeconds())
+    assert db.executeSync(db.prepareInsertStatementSync(STUDENT, student.toDynamicMap()))
+    var v = new vector<Student.Student>
+    v += Student.Student.forJsonObject(student)
+    var data = new DynamicMap()
+    data.setObject("student", v)
+    return data
+}
+
+func addAdmission(admission as Admission.Admission) as Admission.Admission
+{
+    assert admission
+    admission.setCreated_atValue(SystemClock.asUTCSeconds())
+    assert db.executeSync(db.prepareInsertStatementSync(ADMISSION, admission.toDynamicMap()))
+    return admission
+}
+
+func addAccount(account as Accounts.Accounts) as Accounts.Accounts
+{
+    assert account
+    account.setCreatedAtValue(SystemClock.asUTCSeconds())
+    assert db.executeSync(db.prepareInsertStatementSync(ACCOUNT, account.toDynamicMap()))
+    return account
+}
+
+func login(username as string, password as string)as DynamicMap
+{
+    var v = new vector<Accounts.Accounts>
+    var criteria = new Accounts.Accounts()
+    criteria.setUsername(username)
+    criteria.setPassword(password)
+    var it = db.querySync(db.prepareQueryWithCriteriaStatementSync(Accounts.TABLENAME, criteria.toDynamicMap(), 1))
+    while it{
+        var o = it.next()
+        if  not o:
+            break
+        var account = Accounts.Accounts.forJsonObject(o)
+        if not account:
+            continue
+        v += account
+    }
+    var data = new DynamicMap()
+    data.setObject("account", v)
+    return data 
+}
+
+func updateStudent(student_id as int, student as Student.Student) as bool
+{
+    assert student
+    student.setUpdated_atValue(SystemClock.asUTCSeconds())
+    var criteria = new Student.Student()
+    criteria.setStudent_idValue(student_id)
+    return db.executeSync(db.prepareUpdateStatementSync(STUDENT, criteria.toDynamicMap(), student.toDynamicMap()))
+}
+
+func updateAdmission(adm_id as int, admission as Admission.Admission) as bool
+{
+    assert admission
+    admission.setUpdated_atValue(SystemClock.asUTCSeconds())
+    var criteria = new Admission.Admission()
+    criteria.setAdm_idValue(adm_id)
+    return db.executeSync(db.prepareUpdateStatementSync(ADMISSION, criteria.toDynamicMap(), admission.toDynamicMap()))
+}
+
+func deleteStudent(student_id as int) as bool
+{
+    var criteria = new Student.Student()
+    criteria.setStudent_idValue(student_id)
+    return db.executeSync(db.prepareDeleteStatementSync(STUDENT, criteria.toDynamicMap()))
+}
+
+func deleteAdmission(adm_id as int) as bool
+{
+    var criteria = new Admission.Admission()
+    criteria.setAdm_idValue(adm_id)
+    return db.executeSync(db.prepareDeleteStatementSync(ADMISSION, criteria.toDynamicMap()))
+}
+
+func deleteAccount(account_id as int) as bool
+{
+    var criteria = new Accounts.Accounts()
+    criteria.setAccountIdValue(account_id)
+    return db.executeSync(db.prepareDeleteStatementSync(ACCOUNT, criteria.toDynamicMap()))
+}
+
+
+func close
+{
+    if  db:
+        db.closeSync()
+    
+    db = null
+}

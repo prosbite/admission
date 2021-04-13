@@ -1,0 +1,4 @@
+server/.build/
+client/.build/
+client/src/app/Env.sling
+server/src/app/Env.sling

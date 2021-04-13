@@ -1,0 +1,19 @@
+import jk.widget
+import jk.widget.common
+
+class is ScreenForWidget #screen #main:
+
+var navi as NavigationWidget
+var login
+var student
+var addStudent
+
+func initialize override
+{
+    base.initialize()
+    navi = new NavigationWidget(context)
+    navi.setWidgetEnableActionBar(false)
+    setWidget(navi)
+    APIClient.create(context, navi)
+    navi.pushWidget(new MasterWidget(context))
+}

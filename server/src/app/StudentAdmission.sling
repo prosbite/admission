@@ -1,0 +1,17 @@
+class:
+
+model StudentAdmission
+{
+    adm_id as int
+    student_id as int
+    sy as string
+    sem as string
+    course as string
+    firstname as string
+    middlename as string
+    lastname as string
+    gender as string
+    created_at as long
+    updated_at as long
+}
+

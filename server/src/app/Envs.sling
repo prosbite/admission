@@ -1,0 +1,6 @@
+class:
+
+const DB = "localhost:leonardo:leonardo:sms_db:ssl:utf8"
+const HOST = "http://ec2-54-251-91-87.ap-southeast-1.compute.amazonaws.com"
+const SERVER_PORT = "30078"
+
