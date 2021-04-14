@@ -9,19 +9,239 @@ ui LayerWidget
         scrollBarDisabled = true
         LayerWithBackgroundColorWidget container{
             color = Color.instance("#F4F4F4")
-                VerticalBoxWidget {
+            HorizontalBoxWidget {
+                marginBottom = context.getHeightValue("25mm")
+                VerticalBoxWidget : 3.0 {
                     marginLeft = context.getHeightValue("20mm")
-                    marginRight = context.getHeightValue("20mm")
-                    marginTop = context.getHeightValue("5mm")
+                    marginRight = context.getHeightValue("10mm")
+                    marginTop = context.getHeightValue("15mm")
                     marginBottom = context.getHeightValue("5mm")
+                    
+                    HorizontalBoxWidget {
+                        marginBottom = context.getHeightValue("24px")
+                        LabelWidget : 1.0 {
+                            text = "LIST OF REGISTERED STUDENTS"
+                            fontSize = context.getHeightValue("3mm")
+                            textColor = Color.instance("#AAAAAA")
+                            fontBold = true
+                        }
+                        TextButtonWidget {
+                            text = "+ REGISTER NEW STUDENT"
+                            backgroundColor = Color.instance("#2ecc71")
+                            textColor = Color.instance("#FFFFFF")
+                            padding = context.getHeightValue("5px")
+                            paddingHorizontal = context.getHeightValue("7px")
+                            fontSize = context.getHeightValue("9px")
+                            clickHandler = func {
+                                parent.removeAllChildren()
+                            }
+                        }
+                    }
+                   
+                    VerticalBoxWidget {
+                        spacing = context.getHeightValue("5px")
+                        HorizontalBoxWidget {
+                            margin = context.getHeightValue("5px")
+                            marginLeft = context.getHeightValue("16px")
+                            marginRight = context.getHeightValue("16px")
+                            LabelWidget : 1.0 {
+                                text = "LASTNAME"
+                                fontSize = context.getHeightValue("9px")
+                                textColor = Color.instance("#CCCCCC")
+                                
+                            }
+                            LabelWidget : 1.0 {
+                                text = "FIRSTNAME"
+                                fontSize = context.getHeightValue("9px")
+                                textColor = Color.instance("#CCCCCC")
+                                
+                            }
+                            LabelWidget : 1.0 {
+                                text = "MIDDLENAME"
+                                fontSize = context.getHeightValue("9px")
+                                textColor = Color.instance("#CCCCCC")
+                                
+                            }
+                            LabelWidget : 1.0 {
+                                text = "GENDER"
+                                fontSize = context.getHeightValue("9px")
+                                textColor = Color.instance("#CCCCCC")
+                                
+                            }
+                            LabelWidget : 1.0 {
+                                text = "ACTIONS"
+                                fontSize = context.getHeightValue("9px")
+                                textColor = Color.instance("#CCCCCC")
+                                
+                            }
+                        }
+                        LayerWithBackgroundColorWidget {
+                            color = Color.instance("#FAFAFA")
+                            HorizontalBoxWidget {
+                                margin = context.getHeightValue("16px")
+
+                                LabelWidget : 1.0 {
+                                    text = "Beniga"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                LabelWidget : 1.0 {
+                                    text = "Rizaly"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                LabelWidget : 1.0 {
+                                    text = "Castrudes"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                LabelWidget : 1.0 {
+                                    text = "Female"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                HorizontalBoxWidget : 1.0 {
+                                    spacing = context.getHeightValue("10px")
+                                    LabelWidget {
+                                        text = "EDIT"
+                                        fontSize = context.getHeightValue("9px")
+                                        textColor = Color.instance("#2ecc71")
+                                        
+                                    }
+                                    LabelWidget {
+                                        text = "DELETE"
+                                        fontSize = context.getHeightValue("9px")
+                                        textColor = Color.instance("#e74c3c")
+                                        
+                                    }
+                                }
+                            }
+                        }
+                        LayerWithBackgroundColorWidget {
+                            color = Color.instance("#FAFAFA")
+                            HorizontalBoxWidget {
+                                margin = context.getHeightValue("16px")
+
+                                LabelWidget : 1.0 {
+                                    text = "Pedales"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                LabelWidget : 1.0 {
+                                    text = "Rustom"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                LabelWidget : 1.0 {
+                                    text = "Ramos"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                LabelWidget : 1.0 {
+                                    text = "Male"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                HorizontalBoxWidget : 1.0 {
+                                    spacing = context.getHeightValue("10px")
+                                    LabelWidget {
+                                        text = "EDIT"
+                                        fontSize = context.getHeightValue("9px")
+                                        textColor = Color.instance("#2ecc71")
+                                        
+                                    }
+                                    LabelWidget {
+                                        text = "DELETE"
+                                        fontSize = context.getHeightValue("9px")
+                                        textColor = Color.instance("#e74c3c")
+                                        
+                                    }
+                                }
+                            }
+                        }
+                        LayerWithBackgroundColorWidget {
+                            color = Color.instance("#FAFAFA")
+                            HorizontalBoxWidget {
+                                margin = context.getHeightValue("16px")
+
+                                LabelWidget : 1.0 {
+                                    text = "Jabagat"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                LabelWidget : 1.0 {
+                                    text = "Nino"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                LabelWidget : 1.0 {
+                                    text = "Curimao"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                LabelWidget : 1.0 {
+                                    text = "Male"
+                                    fontSize = context.getHeightValue("10px")
+                                    textColor = Color.instance("#555555")
+                                    
+                                }
+                                HorizontalBoxWidget : 1.0 {
+                                    spacing = context.getHeightValue("10px")
+                                    LabelWidget {
+                                        text = "EDIT"
+                                        fontSize = context.getHeightValue("9px")
+                                        textColor = Color.instance("#2ecc71")
+                                        
+                                    }
+                                    LabelWidget {
+                                        text = "DELETE"
+                                        fontSize = context.getHeightValue("9px")
+                                        textColor = Color.instance("#e74c3c")
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                VerticalBoxWidget : 1.0 {
+                    marginRight = context.getHeightValue("20mm")
+                    marginTop = context.getHeightValue("15mm")
+                    marginBottom = context.getHeightValue("5mm")
+
                     LabelWidget {
-                    text = "Registration"
-                    fontSize = context.getHeightValue("14mm")
+                        text = "STATISTICS"
+                        paddingBottom = context.getHeightValue("7mm")
+                        fontSize = context.getHeightValue("3mm")
+                        textColor = Color.instance("#AAAAAA")
+                        fontBold = true
+                    }
+                    
+                    VerticalBoxWidget {
+                        
+                    }
+                    // LayerWithBackgroundColorWidget : 1.0 {
+                    //     color = Color.instance("#FAFAFA")
+                        
+                    // }
                 }
             }
         }
     }
 }
+
+pvar parent as LayerWithBackgroundColorWidget
 
 func initializeWidget override
 {

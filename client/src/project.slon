@@ -1,7 +1,7 @@
 {
     vendorId "eqela"
-    projectId "tasklist"
-    title "Sling Tasklist"
+    projectId "Admission"
+    title "Admission"
     copyright "Copyright (c) 2021 Eqela"
     lincense "All rights reserved."
     libraries [

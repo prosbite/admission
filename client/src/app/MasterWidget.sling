@@ -14,7 +14,7 @@ ui LayerWidget
                 LayerWithBackgroundColorWidget {
                     color = Color.instance("#FAFAFA")
                     HorizontalBoxWidget {
-                        fixedHeight = context.getHeightValue("14mm")
+                        fixedHeight = context.getHeightValue("16mm")
                         HorizontalBoxWidget : 1.0 {
                             marginLeft = context.getHeightValue("20mm")
                             marginRight = context.getHeightValue("20mm")
@@ -23,12 +23,13 @@ ui LayerWidget
                                 marginBottom = context.getHeightValue("5mm")
                                 ImageWidget : 1.0 {
                                     imageResource = "logo"
-                                    imageHeight = context.getHeightValue("4mm")
+                                    // imageHeight = context.getHeightValue("1mm")
+                                    // imageWidth = context.getHeightValue("35mm")
                                 }
                             }
                             HorizontalBoxWidget : 2.0 {
-                                marginTop = context.getHeightValue("2mm")
-                                marginBottom = context.getHeightValue("2mm")
+                                marginTop = context.getHeightValue("3mm")
+                                marginBottom = context.getHeightValue("3mm")
                                 spacing = context.getHeightValue("8mm")
                                 
                                 LabelWidget : 1.0 {
@@ -43,15 +44,6 @@ ui LayerWidget
                                         goToDashboard()
                                     }
                                 }
-                                ButtonWithImageWidget admissionBtn {
-                                    buttonImage = "admission_default"
-                                    buttonTitle = "Admission"
-                                    ImageSize = context.getHeightValue("8mm")
-                                    fontSize = context.getHeightValue("2mm")
-                                    clickHandler = func {
-                                        goToAdmission()
-                                    }
-                                }
                                 ButtonWithImageWidget registrationBtn {
                                     buttonImage = "reg_default"
                                     buttonTitle = "Registration"
@@ -61,7 +53,15 @@ ui LayerWidget
                                         goToRegistration()
                                     }
                                 }
-
+                                ButtonWithImageWidget admissionBtn {
+                                    buttonImage = "admission_default"
+                                    buttonTitle = "Admission"
+                                    ImageSize = context.getHeightValue("8mm")
+                                    fontSize = context.getHeightValue("2mm")
+                                    clickHandler = func {
+                                        goToAdmission()
+                                    }
+                                }
                                 ButtonWithImageWidget accountsBtn {
                                     buttonImage = "accounts_default"
                                     buttonTitle = "Accounts"
@@ -102,6 +102,16 @@ ui LayerWidget
                 LayerWithBackgroundColorWidget mainContent : 1.0 {
                     color = Color.instance("#F4F4F4")
                 }
+                
+                // HorizontalBoxWidget : 1.0 {
+                //     marginTop = "15mm"
+                //     LabelWidget : 1.0 {
+                //         text = "Admission Copyright 2021, Engtech Global Solutions Inc"
+                //         fontSize = context.getHeightValue("5mm")
+                //         textColor = Color.instance("#AAAAAA")
+                //         textAlign = LabelWidget.ALIGN_CENTER
+                //     }
+                // }
             }
         }
     }
@@ -141,7 +151,7 @@ func goToRegistration
     navigate()
     registrationBtn.setWidgetButtonImage("registration_selected")
     mainContent.removeAllChildren()
-    mainContent.addWidget(new RegistrationWidget(context))
+    mainContent.addWidget(new RegistrationWidget(context).setParent(mainContent))
 }
 
 func goToAccounts 
